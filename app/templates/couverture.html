@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Carte de couverture - {{ config.nom_entreprise }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+    #map { height: 600px; width: 100%; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="section-title">Notre couverture réseau</h1>
+    <div id="map" class="fade-in"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    var map = L.map('map').setView([-11.6876, 27.5026], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    {% for zone in zones %}
+        L.marker([{{ zone.latitude }}, {{ zone.longitude }}])
+            .addTo(map)
+            .bindPopup("{{ zone.nom }}<br>{{ zone.description }}");
+    {% endfor %}
+</script>
+{% endblock %}

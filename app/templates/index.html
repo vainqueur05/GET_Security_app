@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block title %}Accueil - {{ config.nom_entreprise }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero d-flex align-items-center fade-in">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold">{{ config.nom_entreprise }}</h1>
+                <p class="lead mb-4">{{ config.slogan }}</p>
+                <a href="{{ url_for('main.contact') }}" class="btn btn-primary btn-lg me-2">Demander un devis</a>
+                <a href="{{ url_for('main.services_list') }}" class="btn btn-outline-light btn-lg">Nos services</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistiques -->
+<section class="container py-5 fade-in">
+    <div class="row g-4">
+        {% for stat in stats %}
+        <div class="col-md-3">
+            <div class="stat-item">
+                <i class="bi {{ stat.icone }}"></i>
+                <h3>{{ stat.valeur }}</h3>
+                <p>{{ stat.label }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Pourquoi nous choisir -->
+<section class="container py-5 fade-in">
+    <h2 class="section-title">Pourquoi nous choisir ?</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <i class="bi bi-shield-check fs-1" style="color: var(--accent-color);"></i>
+                    <h5 class="card-title">Fiabilité</h5>
+                    <p class="card-text">Des solutions réseau stables et sécurisées pour vos infrastructures.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <i class="bi bi-speedometer2 fs-1" style="color: var(--accent-color);"></i>
+                    <h5 class="card-title">Performance</h5>
+                    <p class="card-text">Des débits optimisés et une faible latence garantie.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <i class="bi bi-headset fs-1" style="color: var(--accent-color);"></i>
+                    <h5 class="card-title">Support 24/7</h5>
+                    <p class="card-text">Une équipe disponible à tout moment pour vous assister.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Notre processus -->
+<section class="container py-5 fade-in">
+    <h2 class="section-title">Notre processus</h2>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <h4>Consultation</h4>
+                <p>Analyse de vos besoins et définition des objectifs.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <h4>Planification</h4>
+                <p>Conception de l'architecture réseau sur mesure.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="process-step">
+                <div class="step-number">3</div>
+                <h4>Déploiement</h4>
+                <p>Installation et configuration des équipements.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="process-step">
+                <div class="step-number">4</div>
+                <h4>Maintenance</h4>
+                <p>Suivi et optimisation continue.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services -->
+<section class="container py-5 fade-in">
+    <h2 class="section-title">Nos Services</h2>
+    <div class="row g-4">
+        {% for service in services %}
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <i class="bi {{ service.icone }} fs-1" style="color: var(--accent-color);"></i>
+                    <h5 class="card-title">{{ service.titre }}</h5>
+                    <p class="card-text">{{ service.description }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Projets récents -->
+<section class="container py-5 fade-in">
+    <h2 class="section-title">Nos Réalisations</h2>
+    <div class="row g-4">
+        {% for projet in projets %}
+        <div class="col-md-4">
+            <div class="card h-100">
+                <img src="{{ url_for('static', filename='images/' + projet.image) if projet.image else url_for('static', filename='images/default-project.jpg') }}" class="card-img-top" alt="{{ projet.titre }}" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ projet.titre }}</h5>
+                    <p class="card-text">{{ projet.description }}</p>
+                    <a href="{{ url_for('main.project_detail', id=projet.id) }}" class="btn btn-outline-primary">En savoir plus</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Équipe -->
+<section class="container py-5 fade-in">
+    <h2 class="section-title">Notre Équipe</h2>
+    <div class="row g-4">
+        {% for membre in equipe %}
+        <div class="col-md-3">
+            <div class="team-member">
+                <img src="{{ url_for('static', filename='images/' + membre.photo) if membre.photo else url_for('static', filename='images/default-avatar.jpg') }}" alt="{{ membre.nom }}">
+                <h5>{{ membre.nom }}</h5>
+                <p>{{ membre.role }}</p>
+                <p class="small">{{ membre.description }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Témoignages -->
+<section class="container py-5 fade-in">
+    <h2 class="section-title">Ce que disent nos clients</h2>
+    <div class="row g-4">
+        {% for tem in temoignages %}
+        <div class="col-md-4">
+            <div class="card p-3">
+                <p>"{{ tem.message }}"</p>
+                <div class="d-flex justify-content-between">
+                    <span>{{ tem.client }}</span>
+                    <span class="text-warning">{{ '★' * tem.note }}{{ '☆' * (5 - tem.note) }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

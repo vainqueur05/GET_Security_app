@@ -1,0 +1,176 @@
+:root {
+    --primary-color: #1a2b4c;   /* bleu foncé */
+    --secondary-color: #2c3e6e;  /* bleu un peu plus clair */
+    --accent-color: #3498db;      /* bleu vif pour les boutons */
+    --light-bg: #f8f9fa;          /* fond gris clair pour les sections */
+    --dark-bg: #0a1a2a;           /* fond très foncé pour le footer */
+    --text-dark: #333;
+    --text-light: #fff;
+    --text-muted: #6c757d;
+    --border-radius: 8px;
+    --box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
+    background-color: #fff;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+/* Navigation */
+.navbar {
+    background-color: var(--dark-bg) !important;
+}
+.navbar-brand {
+    font-weight: 700;
+    color: var(--accent-color) !important;
+}
+.nav-link {
+    color: var(--text-light) !important;
+}
+.nav-link:hover {
+    color: var(--accent-color) !important;
+}
+
+/* Hero Section */
+.hero {
+    min-height: 80vh;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: var(--text-light);
+}
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--text-light);
+}
+.hero .btn-primary {
+    background-color: var(--accent-color);
+    border: none;
+    padding: 12px 30px;
+    font-weight: 600;
+}
+.hero .btn-primary:hover {
+    background-color: #2980b9;
+}
+
+/* Sections */
+.section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+.section-subtitle {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text-muted);
+}
+
+/* Cartes */
+.card {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: transform 0.3s;
+}
+.card:hover {
+    transform: translateY(-5px);
+}
+.card-body {
+    padding: 2rem;
+}
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+/* Statistiques */
+.stat-item {
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--light-bg);
+    border-radius: var(--border-radius);
+}
+.stat-item i {
+    font-size: 3rem;
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+}
+.stat-item h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+/* Processus */
+.process-step {
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+}
+.process-step .step-number {
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    background-color: var(--accent-color);
+    color: var(--text-light);
+    border-radius: 50%;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 auto 1rem;
+}
+.process-step h4 {
+    margin-bottom: 1rem;
+}
+
+/* Équipe */
+.team-member {
+    text-align: center;
+}
+.team-member img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    border: 5px solid var(--accent-color);
+}
+.team-member h5 {
+    margin-bottom: 0.5rem;
+}
+.team-member p {
+    color: var(--text-muted);
+}
+
+/* Footer */
+footer {
+    background-color: var(--dark-bg);
+    color: var(--text-light);
+    padding: 3rem 0;
+}
+footer a {
+    color: var(--text-light);
+    text-decoration: none;
+}
+footer a:hover {
+    color: var(--accent-color);
+}
+/* Fade-in animations */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}

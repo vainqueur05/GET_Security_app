@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Projets - {{ config.nom_entreprise }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="section-title">Nos réalisations</h1>
+    <div class="row g-4">
+        {% for projet in projets %}
+        <div class="col-md-4 fade-in">
+            <div class="card h-100">
+                <img src="{{ url_for('static', filename='images/' + projet.image) if projet.image else url_for('static', filename='images/default-project.jpg') }}" class="card-img-top" alt="{{ projet.titre }}" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ projet.titre }}</h5>
+                    <p class="card-text">{{ projet.description }}</p>
+                    <a href="{{ url_for('main.project_detail', id=projet.id) }}" class="btn btn-outline-primary">En savoir plus</a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <p class="text-center">Aucun projet pour le moment.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

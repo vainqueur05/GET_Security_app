@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Équipe - {{ config.nom_entreprise }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="section-title">Notre équipe</h1>
+    <div class="row g-4">
+        {% for membre in equipe %}
+        <div class="col-md-3 fade-in">
+            <div class="team-member">
+                <img src="{{ url_for('static', filename='images/' + membre.photo) if membre.photo else url_for('static', filename='images/.jpg') }}"
+                     alt="{{ membre.nom }}"
+                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
+                <h5>{{ membre.nom }}</h5>
+                <p>{{ membre.role }}</p>
+                <p class="small">{{ membre.description }}</p>
+                <!-- Ligne de débogage : affiche le nom du fichier (à supprimer après correction) -->
+                <p style="font-size: 0.8em; color: gray;">Fichier: {{ membre.photo }}</p>
+            </div>
+        </div>
+        {% else %}
+        <p class="text-center">Aucun membre pour le moment.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

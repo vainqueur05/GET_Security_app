@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ projet.titre }} - {{ config.nom_entreprise }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('main.projets_list') }}">Projets</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ projet.titre }}</li>
+        </ol>
+    </nav>
+    <div class="row">
+        <div class="col-md-8">
+            <h1>{{ projet.titre }}</h1>
+            <img src="{{ url_for('static', filename='images/' + projet.image) if projet.image else url_for('static', filename='images/default-project.jpg') }}" class="img-fluid mb-4" alt="{{ projet.titre }}">
+            <p class="lead">{{ projet.description }}</p>
+            {% if projet.lien %}
+                <a href="{{ projet.lien }}" class="btn btn-primary" target="_blank">Voir le projet</a>
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Détails</h5>
+                    <p><strong>Date :</strong> {{ projet.date or 'Non spécifiée' }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

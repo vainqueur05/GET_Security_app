@@ -1,24 +1,171 @@
 {% extends 'base.html' %}
 
-{% block title %}Projets - {{ config.nom_entreprise }}{% endblock %}
+{% block title %}Réalisations | {{ config.nom_entreprise }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .projects-header {
+        padding-top: 120px;
+        margin-bottom: 80px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding-bottom: 40px;
+    }
+
+    /* Grid de l'écosystème */
+    .project-card {
+        background: #0d0d0e;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        position: relative;
+    }
+
+    .project-card:hover {
+        border-color: var(--kairos-gold);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        transform: translateY(-5px);
+    }
+
+    /* Conteneur Image avec Overlay */
+    .project-thumb {
+        position: relative;
+        height: 250px;
+        overflow: hidden;
+        background: #000;
+    }
+
+    .project-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.6;
+        transition: 0.8s ease;
+        filter: saturate(0.5);
+    }
+
+    .project-card:hover .project-thumb img {
+        opacity: 0.9;
+        filter: saturate(1);
+        transform: scale(1.05);
+    }
+
+    /* Badge Catégorie */
+    .project-tag {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        border: 1px solid var(--kairos-gold);
+        color: var(--kairos-gold);
+        padding: 4px 12px;
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 700;
+        z-index: 2;
+    }
+
+    /* Corps de la carte */
+    .project-body {
+        padding: 30px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .project-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+        color: #fff;
+    }
+
+    .project-description {
+        color: #888;
+        font-size: 0.9rem;
+        line-height: 1.7;
+        margin-bottom: 25px;
+    }
+
+    /* Bouton d'action minimaliste */
+    .project-link {
+        margin-top: auto;
+        color: var(--kairos-gold);
+        text-decoration: none;
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        display: inline-flex;
+        align-items: center;
+        transition: 0.3s;
+    }
+
+    .project-link i {
+        margin-left: 10px;
+        transition: 0.3s;
+    }
+
+    .project-link:hover i {
+        transform: translateX(8px);
+    }
+
+    /* Animation de chargement */
+    .fade-up {
+        animation: fadeUp 0.8s ease forwards;
+        opacity: 0;
+    }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <h1 class="section-title">Nos réalisations</h1>
-    <div class="row g-4">
+<div class="container pb-5">
+    <div class="projects-header text-center">
+        <span class="text-gold small text-uppercase" style="letter-spacing: 5px; color: var(--kairos-gold);">Portfolio Lab</span>
+        <h1 class="section-title mt-2">Réalisations & Systèmes</h1>
+        <p class="text-muted mx-auto" style="max-width: 600px;">Découvrez les piliers de l'écosystème KAIROS : des solutions conçues pour l'efficacité, la performance et l'élégance technologique.</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
         {% for projet in projets %}
-        <div class="col-md-4 fade-in">
-            <div class="card h-100">
-                <img src="{{ url_for('static', filename='images/' + projet.image) if projet.image else url_for('static', filename='images/default-project.jpg') }}" class="card-img-top" alt="{{ projet.titre }}" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ projet.titre }}</h5>
-                    <p class="card-text">{{ projet.description }}</p>
-                    <a href="{{ url_for('main.project_detail', id=projet.id) }}" class="btn btn-outline-primary">En savoir plus</a>
+        <div class="col-lg-4 col-md-6 fade-up" style="animation-delay: {{ loop.index0 * 0.1 }}s">
+            <div class="project-card">
+                <div class="project-thumb">
+                    <span class="project-tag">Ecosystem Ready</span>
+                    
+                    <img src="{{ url_for('static', filename='images/' + projet.image) if projet.image else url_for('static', filename='images/default-project.jpg') }}" 
+                         alt="{{ projet.titre }}">
+                </div>
+                
+                <div class="project-body">
+                    <h5 class="project-title">{{ projet.titre }}</h5>
+                    <p class="project-description">
+                        {{ projet.description|truncate(120) }}
+                    </p>
+                    <a href="{{ url_for('main.project_detail', id=projet.id) }}" class="project-link">
+                        Analyser le projet <i class="bi bi-arrow-right"></i>
+                    </a>
                 </div>
             </div>
         </div>
         {% else %}
-        <p class="text-center">Aucun projet pour le moment.</p>
+        <div class="col-12 text-center py-5">
+            <div class="p-5" style="border: 1px dashed rgba(255,255,255,0.1);">
+                <i class="bi bi-stack fs-1 text-muted mb-3 d-block"></i>
+                <p class="text-muted">Initialisation de nouveaux modules en cours...</p>
+            </div>
+        </div>
         {% endfor %}
     </div>
 </div>

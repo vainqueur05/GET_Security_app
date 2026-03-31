@@ -1,33 +1,109 @@
 {% extends 'base.html' %}
 
-{% block title %}Carte de couverture - {{ config.nom_entreprise }}{% endblock %}
+{% block title %}Réseau & Couverture | {{ config.nom_entreprise }}{% endblock %}
 
-{% block extra_head %}
+{% block extra_css %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
-    #map { height: 600px; width: 100%; }
+    .map-container {
+        padding-top: 120px;
+        padding-bottom: 80px;
+    }
+
+    /* Style du conteneur de la carte */
+    #map { 
+        height: 650px; 
+        width: 100%; 
+        background: #050505; /* Évite le flash blanc au chargement */
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        filter: grayscale(100%) invert(100%) contrast(90%); /* Rend la carte sombre par défaut */
+    }
+
+    /* Personnalisation du Popup Leaflet */
+    .leaflet-popup-content-wrapper {
+        background: #121212 !important;
+        color: #fff !important;
+        border-radius: 0px !important;
+        border: 1px solid var(--kairos-gold);
+    }
+
+    .leaflet-popup-tip {
+        background: var(--kairos-gold) !important;
+    }
+
+    .popup-title {
+        font-family: 'Space Grotesk', sans-serif;
+        color: var(--kairos-gold);
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+    }
+
+    /* Marqueur personnalisé "Glow" */
+    .custom-marker {
+        width: 12px;
+        height: 12px;
+        background: var(--kairos-gold);
+        border-radius: 50%;
+        box-shadow: 0 0 15px var(--kairos-gold);
+        border: 2px solid #000;
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <h1 class="section-title">Notre couverture réseau</h1>
-    <div id="map" class="fade-in"></div>
+<div class="container map-container">
+    <div class="text-center mb-5">
+        <span class="text-gold small text-uppercase" style="letter-spacing: 5px; color: var(--kairos-gold);">Infrastructure Globale</span>
+        <h1 class="section-title mt-2">Maillage du Réseau</h1>
+        <p class="text-muted mx-auto" style="max-width: 600px;">Visualisez l'expansion de l'écosystème KAIROS et nos points de présence stratégiques.</p>
+    </div>
+
+    <div id="map" class="fade-in shadow-lg"></div>
+    
+    <div class="mt-4 d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <div class="custom-marker me-2"></div>
+            <span class="small text-muted text-uppercase" style="letter-spacing: 1px;">Nœud Actif</span>
+        </div>
+        <div class="text-muted small">
+            Source : KAIROS Intelligence Unit - 2026
+        </div>
+    </div>
 </div>
 {% endblock %}
 
-{% block scripts %}
-{{ super() }}
+{% block extra_js %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    var map = L.map('map').setView([-11.6876, 27.5026], 6);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    // Initialisation avec un style sombre via CartoDB (plus élégant pour KAIROS)
+    var map = L.map('map', {
+        zoomControl: false // On cache pour le minimalisme
+    }).setView([-11.6876, 27.5026], 6);
+
+    // Utilisation d'un fond de carte Dark Matter de CartoDB
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; KAIROS Ecosystem | CartoDB',
+        subdomains: 'abcd',
+        maxZoom: 20
     }).addTo(map);
+
+    // Ajout du contrôle de zoom en bas à droite pour ne pas gêner
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+    // Icone personnalisée pour l'écosystème
+    var kairosIcon = L.divIcon({
+        className: 'custom-div-icon',
+        html: "<div class='custom-marker'></div>",
+        iconSize: [12, 12],
+        iconAnchor: [6, 6]
+    });
+
     {% for zone in zones %}
-        L.marker([{{ zone.latitude }}, {{ zone.longitude }}])
+        L.marker([{{ zone.latitude }}, {{ zone.longitude }}], {icon: kairosIcon})
             .addTo(map)
-            .bindPopup("{{ zone.nom }}<br>{{ zone.description }}");
+            .bindPopup("<div class='popup-title'>{{ zone.nom }}</div><div class='small text-muted'>{{ zone.description }}</div>");
     {% endfor %}
 </script>
 {% endblock %}

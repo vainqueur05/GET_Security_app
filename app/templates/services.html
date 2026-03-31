@@ -1,27 +1,185 @@
 {% extends 'base.html' %}
 
-{% block title %}Équipe - {{ config.nom_entreprise }}{% endblock %}
+{% block title %}Expertise & Infrastructures | {{ config.nom_entreprise }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .services-container {
+        padding-top: 150px;
+        padding-bottom: 100px;
+    }
+
+    .service-card {
+        background: rgba(255, 255, 255, 0.01);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 50px 40px;
+        height: 100%;
+        transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .service-card:hover {
+        background: rgba(255, 255, 255, 0.03);
+        border-color: var(--kairos-gold);
+        transform: translateY(-10px);
+    }
+
+    .service-number {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 4rem;
+        font-weight: 900;
+        color: rgba(255, 255, 255, 0.03);
+        line-height: 1;
+    }
+
+    .service-icon {
+        font-size: 2.5rem;
+        color: var(--kairos-gold);
+        margin-bottom: 30px;
+        display: inline-block;
+    }
+
+    .service-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #fff;
+        margin-bottom: 20px;
+    }
+
+    .service-text {
+        color: #888;
+        font-size: 0.95rem;
+        line-height: 1.7;
+        margin-bottom: 30px;
+    }
+
+    .service-features {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .service-features li {
+        color: #555;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    .service-features li::before {
+        content: "—";
+        margin-right: 10px;
+        color: var(--kairos-gold);
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <h1 class="section-title">Notre équipe</h1>
+<div class="container services-container">
+    <div class="text-center mb-5 pb-5">
+        <span class="text-gold small text-uppercase" style="letter-spacing: 5px; color: var(--kairos-gold);">Ingénierie Télécom</span>
+        <h1 class="section-title mt-2">Solutions d'Architecture Réseau</h1>
+        <p class="text-muted mx-auto" style="max-width: 600px;">Déploiement d'infrastructures critiques et optimisation des flux de communication pour entreprises exigeantes.</p>
+    </div>
+
     <div class="row g-4">
-        {% for membre in equipe %}
-        <div class="col-md-3 fade-in">
-            <div class="team-member">
-                <img src="{{ url_for('static', filename='images/' + membre.photo) if membre.photo else url_for('static', filename='images/.jpg') }}"
-                     alt="{{ membre.nom }}"
-                     style="width: 150px; height: 150px; object-fit: cover; border-radius: 50%;">
-                <h5>{{ membre.nom }}</h5>
-                <p>{{ membre.role }}</p>
-                <p class="small">{{ membre.description }}</p>
-                <!-- Ligne de débogage : affiche le nom du fichier (à supprimer après correction) -->
-                <p style="font-size: 0.8em; color: gray;">Fichier: {{ membre.photo }}</p>
+        <div class="col-lg-4 col-md-6 fade-in">
+            <div class="service-card">
+                <div class="service-number">01</div>
+                <div class="service-icon"><i class="bi bi-diagram-3"></i></div>
+                <h3 class="service-title">Architecture LAN/WAN</h3>
+                <p class="service-text">Conception de topologies réseau haute disponibilité, segmentation VLAN et routage dynamique pour une performance optimale.</p>
+                <ul class="service-features">
+                    <li>Switching & Routing (Cisco/Mikrotik)</li>
+                    <li>Topologies Redondantes</li>
+                    <li>Optimisation de la Bande Passante</li>
+                </ul>
             </div>
         </div>
-        {% else %}
-        <p class="text-center">Aucun membre pour le moment.</p>
-        {% endfor %}
+
+        <div class="col-lg-4 col-md-6 fade-in" style="animation-delay: 0.1s;">
+            <div class="service-card">
+                <div class="service-number">02</div>
+                <div class="service-icon"><i class="bi bi-shield-lock"></i></div>
+                <h3 class="service-title">Cyber-Sécurité</h3>
+                <p class="service-text">Mise en place de barrières de défense robustes : Firewalls, VPN IPsec/SSL, et détection d'intrusions (IDS/IPS).</p>
+                <ul class="service-features">
+                    <li>Configuration Firewalling</li>
+                    <li>Gestion des accès VPN</li>
+                    <li>Audit de vulnérabilité réseau</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 fade-in" style="animation-delay: 0.2s;">
+            <div class="service-card">
+                <div class="service-number">03</div>
+                <div class="service-icon"><i class="bi bi-server"></i></div>
+                <h3 class="service-title">Admin Système</h3>
+                <p class="service-text">Gestion serveurs Linux/Windows, virtualisation (VMware/Proxmox) et services de stockage centralisés (NAS/SAN).</p>
+                <ul class="service-features">
+                    <li>Virtualisation & Conteneurs</li>
+                    <li>Cloud Hybride & Local</li>
+                    <li>Monitoring Temps Réel</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 fade-in" style="animation-delay: 0.3s;">
+            <div class="service-card">
+                <div class="service-number">04</div>
+                <div class="service-icon"><i class="bi bi-broadcast"></i></div>
+                <h3 class="service-title">Radio & Faisceaux</h3>
+                <p class="service-text">Déploiement de liaisons sans fil point-à-point, configuration d'antennes et maintenance d'équipements de transmission.</p>
+                <ul class="service-features">
+                    <li>Liaisons FH & Wi-Fi Pro</li>
+                    <li>Calcul de Bilan de Liaison</li>
+                    <li>Maintenance de Sites Radio</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 fade-in" style="animation-delay: 0.4s;">
+            <div class="service-card">
+                <div class="service-number">05</div>
+                <div class="service-icon"><i class="bi bi-telephone-inbound"></i></div>
+                <h3 class="service-title">VoIP & IPBX</h3>
+                <p class="service-text">Installation de systèmes de communication unifiés basés sur le protocole SIP pour une téléphonie d'entreprise moderne.</p>
+                <ul class="service-features">
+                    <li>Serveurs Asterisk / 3CX</li>
+                    <li>Configuration de Terminaux IP</li>
+                    <li>Gestion de la Qualité de Service (QoS)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 fade-in" style="animation-delay: 0.5s;">
+            <div class="service-card">
+                <div class="service-number">06</div>
+                <div class="service-icon"><i class="bi bi-Ethernet"></i></div>
+                <h3 class="service-title">Câblage Structuré</h3>
+                <p class="service-text">Mise en œuvre de solutions de câblage cuivre (Cat 6a/7) et fibre optique, avec certification des liens.</p>
+                <ul class="service-features">
+                    <li>Déploiement Fibre Optique</li>
+                    <li>Urbanisation de Baies IT</li>
+                    <li>Maintenance Courants Faibles</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5 pt-5 text-center fade-in">
+        <p class="text-muted">Besoin d'une étude technique pour votre infrastructure ?</p>
+        <a href="{{ url_for('main.contact') }}" class="btn btn-outline-gold px-5 py-3" style="color: var(--kairos-gold); border: 1px solid var(--kairos-gold); border-radius: 0; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; text-decoration: none;">Initier le Diagnostic Réseau</a>
     </div>
 </div>
 {% endblock %}

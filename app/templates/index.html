@@ -1,117 +1,160 @@
 {% extends 'base.html' %}
 
-{% block title %}Accueil - {{ config.nom_entreprise }}{% endblock %}
+{% block title %}Accueil | KAIROS Écosystème{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Hero Section Customization */
+    .hero {
+        height: 100vh;
+        background: radial-gradient(circle at top right, rgba(212, 175, 55, 0.05), transparent),
+                    radial-gradient(circle at bottom left, rgba(212, 175, 55, 0.02), transparent);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .hero h1 {
+        font-size: clamp(3rem, 8vw, 5rem);
+        background: linear-gradient(to right, #fff, var(--kairos-gold));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Boutons de Fondateur */
+    .btn-kairos {
+        padding: 12px 35px;
+        border-radius: 2px; /* Style rectangulaire plus autoritaire */
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 1px;
+        transition: 0.4s;
+    }
+
+    .btn-gold {
+        background: var(--kairos-gold);
+        color: var(--kairos-black) !important;
+        border: none;
+    }
+
+    .btn-gold:hover {
+        box-shadow: 0 0 25px var(--kairos-gold-glow);
+        transform: translateY(-2px);
+    }
+
+    /* Cartes Signature (Ecosystème) */
+    .card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 0; /* Minimalisme */
+        transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card:hover {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: var(--kairos-gold);
+        transform: translateY(-10px);
+    }
+
+    /* Statistiques Modernes */
+    .stat-item {
+        text-align: center;
+        padding: 30px;
+        border-left: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .stat-item h3 {
+        font-size: 2.5rem;
+        color: var(--kairos-gold);
+        font-family: 'Space Grotesk';
+    }
+
+    /* Processus Signature */
+    .process-step {
+        position: relative;
+        padding: 20px;
+    }
+
+    .step-number {
+        font-family: 'Space Grotesk';
+        font-size: 4rem;
+        font-weight: 900;
+        color: rgba(212, 175, 55, 0.1);
+        position: absolute;
+        top: -10px;
+        left: 10px;
+        z-index: -1;
+    }
+
+    .section-title {
+        font-family: 'Space Grotesk';
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        margin-bottom: 60px;
+        color: var(--kairos-gold);
+    }
+
+    /* Images Projets */
+    .project-img-wrapper {
+        overflow: hidden;
+        position: relative;
+    }
+
+    .project-img-wrapper img {
+        transition: 1s ease;
+        filter: grayscale(100%);
+    }
+
+    .card:hover img {
+        filter: grayscale(0%);
+        transform: scale(1.1);
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero d-flex align-items-center fade-in">
+<section class="hero d-flex align-items-center">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-6">
-                <h1 class="display-4 fw-bold">{{ config.nom_entreprise }}</h1>
-                <p class="lead mb-4">{{ config.slogan }}</p>
-                <a href="{{ url_for('main.contact') }}" class="btn btn-primary btn-lg me-2">Demander un devis</a>
-                <a href="{{ url_for('main.services_list') }}" class="btn btn-outline-light btn-lg">Nos services</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Statistiques -->
-<section class="container py-5 fade-in">
-    <div class="row g-4">
-        {% for stat in stats %}
-        <div class="col-md-3">
-            <div class="stat-item">
-                <i class="bi {{ stat.icone }}"></i>
-                <h3>{{ stat.valeur }}</h3>
-                <p>{{ stat.label }}</p>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</section>
-
-<!-- Pourquoi nous choisir -->
-<section class="container py-5 fade-in">
-    <h2 class="section-title">Pourquoi nous choisir ?</h2>
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="card h-100">
-                <div class="card-body">
-                    <i class="bi bi-shield-check fs-1" style="color: var(--accent-color);"></i>
-                    <h5 class="card-title">Fiabilité</h5>
-                    <p class="card-text">Des solutions réseau stables et sécurisées pour vos infrastructures.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card h-100">
-                <div class="card-body">
-                    <i class="bi bi-speedometer2 fs-1" style="color: var(--accent-color);"></i>
-                    <h5 class="card-title">Performance</h5>
-                    <p class="card-text">Des débits optimisés et une faible latence garantie.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card h-100">
-                <div class="card-body">
-                    <i class="bi bi-headset fs-1" style="color: var(--accent-color);"></i>
-                    <h5 class="card-title">Support 24/7</h5>
-                    <p class="card-text">Une équipe disponible à tout moment pour vous assister.</p>
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <span class="text-uppercase letter-spacing-2 mb-3 d-block text-muted" style="letter-spacing: 5px;">KAIROS ECOSYSTEM</span>
+                <h1 class="fw-bold">{{ config.nom_entreprise }}</h1>
+                <p class="lead mb-5 text-muted" style="max-width: 500px;">{{ config.slogan }}</p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="{{ url_for('main.contact') }}" class="btn btn-kairos btn-gold">Démarrer un projet</a>
+                    <a href="{{ url_for('main.services_list') }}" class="btn btn-kairos btn-outline-light">Explorer l'écosystème</a>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Notre processus -->
-<section class="container py-5 fade-in">
-    <h2 class="section-title">Notre processus</h2>
-    <div class="row">
-        <div class="col-md-3">
-            <div class="process-step">
-                <div class="step-number">1</div>
-                <h4>Consultation</h4>
-                <p>Analyse de vos besoins et définition des objectifs.</p>
+<section class="py-5" style="background: #050505;">
+    <div class="container">
+        <div class="row g-0">
+            {% for stat in stats %}
+            <div class="col-md-3 col-6">
+                <div class="stat-item">
+                    <i class="bi {{ stat.icone }} mb-3 d-block text-muted"></i>
+                    <h3>{{ stat.valeur }}</h3>
+                    <p class="text-uppercase small letter-spacing-1 text-muted">{{ stat.label }}</p>
+                </div>
             </div>
-        </div>
-        <div class="col-md-3">
-            <div class="process-step">
-                <div class="step-number">2</div>
-                <h4>Planification</h4>
-                <p>Conception de l'architecture réseau sur mesure.</p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="process-step">
-                <div class="step-number">3</div>
-                <h4>Déploiement</h4>
-                <p>Installation et configuration des équipements.</p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="process-step">
-                <div class="step-number">4</div>
-                <h4>Maintenance</h4>
-                <p>Suivi et optimisation continue.</p>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </section>
 
-<!-- Services -->
-<section class="container py-5 fade-in">
-    <h2 class="section-title">Nos Services</h2>
+<section class="container py-5 mt-5">
+    <h2 class="section-title">Expertises</h2>
     <div class="row g-4">
         {% for service in services %}
         <div class="col-md-4">
-            <div class="card h-100">
+            <div class="card h-100 p-4">
                 <div class="card-body">
-                    <i class="bi {{ service.icone }} fs-1" style="color: var(--accent-color);"></i>
-                    <h5 class="card-title">{{ service.titre }}</h5>
-                    <p class="card-text">{{ service.description }}</p>
+                    <i class="bi {{ service.icone }} fs-1 mb-4 d-block text-gold" style="color: var(--kairos-gold);"></i>
+                    <h5 class="card-title text-uppercase fw-bold mb-3">{{ service.titre }}</h5>
+                    <p class="card-text text-muted">{{ service.description }}</p>
                 </div>
             </div>
         </div>
@@ -119,18 +162,42 @@
     </div>
 </section>
 
-<!-- Projets récents -->
-<section class="container py-5 fade-in">
-    <h2 class="section-title">Nos Réalisations</h2>
+<section class="py-5" style="background: linear-gradient(to bottom, transparent, #0a0a0a);">
+    <div class="container py-5">
+        <h2 class="section-title">Le Moment Kairos</h2>
+        <div class="row g-4">
+            {% set process = [
+                ('Consultation', 'Analyse stratégique de vos besoins.'),
+                ('Ingénierie', 'Conception de l\'architecture sur mesure.'),
+                ('Déploiement', 'Mise en production sécurisée.'),
+                ('Optimisation', 'Suivi et évolution continue.')
+            ] %}
+            {% for title, desc in process %}
+            <div class="col-md-3">
+                <div class="process-step">
+                    <div class="step-number">0{{ loop.index }}</div>
+                    <h4 class="fw-bold">{{ title }}</h4>
+                    <p class="text-muted small">{{ desc }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="container py-5">
+    <h2 class="section-title">Portfolio Lab</h2>
     <div class="row g-4">
         {% for projet in projets %}
         <div class="col-md-4">
-            <div class="card h-100">
-                <img src="{{ url_for('static', filename='images/' + projet.image) if projet.image else url_for('static', filename='images/default-project.jpg') }}" class="card-img-top" alt="{{ projet.titre }}" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ projet.titre }}</h5>
-                    <p class="card-text">{{ projet.description }}</p>
-                    <a href="{{ url_for('main.project_detail', id=projet.id) }}" class="btn btn-outline-primary">En savoir plus</a>
+            <div class="card h-100 border-0">
+                <div class="project-img-wrapper">
+                    <img src="{{ url_for('static', filename='images/' + projet.image) if projet.image else url_for('static', filename='images/default-project.jpg') }}" class="card-img-top" alt="{{ projet.titre }}">
+                </div>
+                <div class="card-body p-4">
+                    <h5 class="card-title text-uppercase fw-bold">{{ projet.titre }}</h5>
+                    <p class="card-text text-muted small">{{ projet.description|truncate(100) }}</p>
+                    <a href="{{ url_for('main.project_detail', id=projet.id) }}" class="btn-link text-gold text-decoration-none small text-uppercase fw-bold">Découvrir <i class="bi bi-arrow-right"></i></a>
                 </div>
             </div>
         </div>
@@ -138,34 +205,16 @@
     </div>
 </section>
 
-<!-- Équipe -->
-<section class="container py-5 fade-in">
-    <h2 class="section-title">Notre Équipe</h2>
-    <div class="row g-4">
-        {% for membre in equipe %}
-        <div class="col-md-3">
-            <div class="team-member">
-                <img src="{{ url_for('static', filename='images/' + membre.photo) if membre.photo else url_for('static', filename='images/default-avatar.jpg') }}" alt="{{ membre.nom }}">
-                <h5>{{ membre.nom }}</h5>
-                <p>{{ membre.role }}</p>
-                <p class="small">{{ membre.description }}</p>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</section>
-
-<!-- Témoignages -->
-<section class="container py-5 fade-in">
-    <h2 class="section-title">Ce que disent nos clients</h2>
+<section class="container py-5 mb-5">
+    <h2 class="section-title">Confiance</h2>
     <div class="row g-4">
         {% for tem in temoignages %}
         <div class="col-md-4">
-            <div class="card p-3">
-                <p>"{{ tem.message }}"</p>
-                <div class="d-flex justify-content-between">
-                    <span>{{ tem.client }}</span>
-                    <span class="text-warning">{{ '★' * tem.note }}{{ '☆' * (5 - tem.note) }}</span>
+            <div class="p-4" style="border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.01);">
+                <p class="fst-italic text-muted mb-4">"{{ tem.message }}"</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="fw-bold small text-uppercase">{{ tem.client }}</span>
+                    <span style="color: var(--kairos-gold);">{{ '★' * tem.note }}</span>
                 </div>
             </div>
         </div>

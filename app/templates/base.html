@@ -3,75 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Mon Site{% endblock %}</title>
+    <title>{% block title %}KAIROS | Écosystème{% endblock %}</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <style>
+        :root {
+            --kairos-black: #080808;
+            --kairos-dark: #121212;
+            --kairos-gold: #D4AF37; 
+            --kairos-gold-glow: rgba(212, 175, 55, 0.3);
+            --glass-bg: rgba(8, 8, 8, 0.85);
+            --text-main: #E0E0E0;
+            --text-muted: #888888;
+        }
+
+        body {
+            background-color: var(--kairos-black);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .navbar-brand {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* NAVBAR SIGNATURE */
+        .navbar-kairos {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            z-index: 1050;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--kairos-gold) !important;
+            font-size: 1.4rem;
+        }
+
+        .nav-link {
+            font-weight: 400;
+            font-size: 0.75rem; /* Légèrement réduit pour accueillir plus de liens */
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted) !important;
+            margin-left: 1.2rem;
+            transition: 0.3s ease;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--kairos-gold) !important;
+            text-shadow: 0 0 10px var(--kairos-gold-glow);
+        }
+
+        main { min-height: 80vh; }
+
+        /* FOOTER PRESTIGE */
+        footer {
+            background-color: #050505;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding-top: 80px;
+            padding-bottom: 40px;
+        }
+
+        footer h5 {
+            color: var(--kairos-gold);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+        }
+
+        footer p, footer li a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: 0.3s;
+        }
+
+        footer li { margin-bottom: 12px; }
+
+        footer li a:hover {
+            color: var(--kairos-gold);
+            padding-left: 8px;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 0; /* Carré pour le look moderne */
+            text-align: center;
+            margin-right: 10px;
+            color: var(--kairos-gold);
+            transition: 0.4s;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .social-links a:hover {
+            background: var(--kairos-gold);
+            color: var(--kairos-black);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            padding-top: 30px;
+            margin-top: 50px;
+            color: #444;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar-kairos">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">{{ config.nom_entreprise }}</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">
+                {{ config.nom_entreprise|default('KAIROS') }}
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Accueil</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.services_list') }}">Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.projets_list') }}">Projets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.projets_list') }}">Ecosystème</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.equipe_list') }}">Équipe</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.blog_list') }}">Blog</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.couverture') }}">Couverture</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.couverture') }}">Réseau</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.blog_list') }}">Insights</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url_for('main.contact') }}">Contact</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <main class="pt-5 mt-4">
+    <main>
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="py-5">
+    <footer>
         <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5>{{ config.nom_entreprise }}</h5>
-                    <p>{{ config.slogan }}</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Liens rapides</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="{{ url_for('main.index') }}">Accueil</a></li>
-                        <li><a href="{{ url_for('main.services_list') }}">Services</a></li>
-                        <li><a href="{{ url_for('main.projets_list') }}">Projets</a></li>
-                        <li><a href="{{ url_for('main.equipe_list') }}">Équipe</a></li>
-                        <li><a href="{{ url_for('main.blog_list') }}">Blog</a></li>
-                        <li><a href="{{ url_for('main.couverture') }}">Couverture</a></li>
-                        <li><a href="{{ url_for('main.contact') }}">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5>Contact</h5>
-                    <p><i class="bi bi-envelope"></i> {{ config.contact_email }}</p>
-                    <p><i class="bi bi-telephone"></i> {{ config.contact_telephone }}</p>
-                    <p><i class="bi bi-geo-alt"></i> {{ config.localisation }}</p>
-                    <div class="social-links">
-                        <a href="#"><i class="bi bi-facebook"></i></a>
+            <div class="row gy-5">
+                <div class="col-lg-4">
+                    <h5>{{ config.nom_entreprise|default('KAIROS') }}</h5>
+                    <p style="max-width: 300px; line-height: 1.8;">
+                        {{ config.slogan|default('L\'ingénierie logicielle au service de la vision stratégique.') }}
+                    </p>
+                    <div class="social-links mt-4">
                         <a href="#"><i class="bi bi-linkedin"></i></a>
-                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        <a href="#"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#"><i class="bi bi-github"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
                     </div>
                 </div>
+                
+                <div class="col-lg-2 col-md-6">
+                    <h5>Navigation</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('main.index') }}">Accueil</a></li>
+                        <li><a href="{{ url_for('main.services_list') }}">Solutions</a></li>
+                        <li><a href="{{ url_for('main.projets_list') }}">Projets Lab</a></li>
+                        <li><a href="{{ url_for('main.blog_list') }}">Journal</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <h5>Infrastructure</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('main.equipe_list') }}">L'Équipe</a></li>
+                        <li><a href="{{ url_for('main.couverture') }}">Réseau & Map</a></li>
+                        <li><a href="{{ url_for('main.contact') }}">Partenariats</a></li>
+                        <li><a href="#">Support Tech</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-4">
+                    <h5>Quartier Général</h5>
+                    <p><i class="bi bi-geo-alt me-2 text-gold"></i> {{ config.localisation|default('Lubumbashi, Haut-Katanga') }}</p>
+                    <p><i class="bi bi-envelope me-2 text-gold"></i> {{ config.contact_email|default('contact@kairos-dev.com') }}</p>
+                    <p><i class="bi bi-telephone me-2 text-gold"></i> {{ config.contact_telephone|default('+243 ...') }}</p>
+                </div>
             </div>
-            <hr class="bg-light">
-            <div class="text-center">
-                <p class="mb-0">&copy; 2025 {{ config.nom_entreprise }}. Tous droits réservés.</p>
+            
+            <div class="text-center copyright">
+                <p class="mb-0">&copy; 2026 {{ config.nom_entreprise }} — Designed by Vainqueur Kalema.</p>
             </div>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        // Optimisation de la navbar au défilement
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('.navbar-kairos');
+            if (window.scrollY > 80) {
+                nav.style.padding = "0.7rem 0";
+                nav.style.background = "rgba(5, 5, 5, 0.98)";
+                nav.style.boxShadow = "0 10px 30px rgba(0,0,0,0.5)";
+            } else {
+                nav.style.padding = "1.2rem 0";
+                nav.style.background = "var(--glass-bg)";
+                nav.style.boxShadow = "none";
+            }
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

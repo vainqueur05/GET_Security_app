@@ -1,29 +1,168 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ projet.titre }} - {{ config.nom_entreprise }}{% endblock %}
+{% block title %}{{ projet.titre }} | Étude de Cas KAIROS{% endblock %}
+
+{% block extra_css %}
+<style>
+    .project-header {
+        padding-top: 150px;
+        padding-bottom: 60px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Fil d'ariane minimaliste */
+    .breadcrumb {
+        background: transparent;
+        padding: 0;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.7rem;
+    }
+
+    .breadcrumb-item a { color: var(--kairos-gold); text-decoration: none; }
+    .breadcrumb-item.active { color: #555; }
+
+    /* Titre et Image */
+    .project-main-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 800;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        color: #fff;
+        margin-bottom: 30px;
+    }
+
+    .project-hero-container {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        background: #000;
+        margin-bottom: 50px;
+    }
+
+    .project-hero-img {
+        width: 100%;
+        height: auto;
+        max-height: 600px;
+        object-fit: cover;
+        opacity: 0.8;
+        filter: contrast(1.1);
+    }
+
+    /* Sidebar de Spécifications */
+    .spec-card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 0;
+        position: sticky;
+        top: 100px;
+    }
+
+    .spec-label {
+        font-family: 'Space Grotesk', sans-serif;
+        text-transform: uppercase;
+        font-size: 0.65rem;
+        letter-spacing: 2px;
+        color: var(--kairos-gold);
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .spec-value {
+        font-size: 0.95rem;
+        color: #fff;
+        margin-bottom: 25px;
+        display: block;
+    }
+
+    /* Contenu du projet */
+    .project-content-text {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #aaa;
+    }
+
+    .btn-visit {
+        background: var(--kairos-gold);
+        color: #000;
+        border-radius: 0;
+        padding: 15px 35px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        transition: 0.4s;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .btn-visit:hover {
+        background: #fff;
+        transform: translateY(-3px);
+    }
+</style>
+{% endblock %}
 
 {% block content %}
+<header class="project-header">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Écosystème</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.projets_list') }}">Réalisations</a></li>
+                <li class="breadcrumb-item active">{{ projet.titre }}</li>
+            </ol>
+        </nav>
+        <h1 class="project-main-title">{{ projet.titre }}</h1>
+    </div>
+</header>
+
 <div class="container py-5">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ url_for('main.projets_list') }}">Projets</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ projet.titre }}</li>
-        </ol>
-    </nav>
-    <div class="row">
-        <div class="col-md-8">
-            <h1>{{ projet.titre }}</h1>
-            <img src="{{ url_for('static', filename='images/' + projet.image) if projet.image else url_for('static', filename='images/default-project.jpg') }}" class="img-fluid mb-4" alt="{{ projet.titre }}">
-            <p class="lead">{{ projet.description }}</p>
-            {% if projet.lien %}
-                <a href="{{ projet.lien }}" class="btn btn-primary" target="_blank">Voir le projet</a>
-            {% endif %}
+    <div class="row g-5">
+        <div class="col-lg-8 fade-in">
+            <div class="project-hero-container">
+                <img src="{{ url_for('static', filename='images/' + projet.image) if projet.image else url_for('static', filename='images/default-project.jpg') }}" 
+                     class="project-hero-img" alt="{{ projet.titre }}">
+            </div>
+
+            <div class="project-content-text">
+                <h3 class="text-white mb-4">Analyse de la solution</h3>
+                {{ projet.description|safe }}
+                
+                {% if projet.lien %}
+                <div class="mt-5">
+                    <a href="{{ projet.lien }}" class="btn-visit" target="_blank">
+                        Lancer l'interface <i class="bi bi-box-arrow-up-right ms-3"></i>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
         </div>
-        <div class="col-md-4">
-            <div class="card">
+
+        <div class="col-lg-4 fade-in">
+            <div class="card spec-card p-4">
                 <div class="card-body">
-                    <h5>Détails</h5>
-                    <p><strong>Date :</strong> {{ projet.date or 'Non spécifiée' }}</p>
+                    <h5 class="text-white text-uppercase small mb-4 pb-3 border-bottom border-secondary" style="letter-spacing: 3px;">Spécifications</h5>
+                    
+                    <span class="spec-label">Déploiement</span>
+                    <span class="spec-value">{{ projet.date or 'T1 2026' }}</span>
+
+                    <span class="spec-label">Catégorie</span>
+                    <span class="spec-value">Infrastructure Numérique</span>
+
+                    <span class="spec-label">Stack Technologique</span>
+                    <span class="spec-value">Python / Flask / SQLAlchemy</span>
+
+                    <span class="spec-label">Statut</span>
+                    <span class="spec-value">
+                        <span class="badge bg-success" style="border-radius: 0; font-weight: 500; letter-spacing: 1px;">OPÉRATIONNEL</span>
+                    </span>
+
+                    <hr class="my-4 border-secondary opacity-25">
+                    
+                    <p class="small text-muted fst-italic">
+                        Ce projet fait partie intégrante de l'écosystème KAIROS et respecte nos standards de sécurité et de performance.
+                    </p>
                 </div>
             </div>
         </div>

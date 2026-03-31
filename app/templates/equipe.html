@@ -1,22 +1,151 @@
 {% extends 'base.html' %}
 
-{% block title %}Équipe - {{ config.nom_entreprise }}{% endblock %}
+{% block title %}L'Équipe | {{ config.nom_entreprise }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Conteneur principal */
+    .team-section {
+        padding-top: 120px;
+        padding-bottom: 80px;
+    }
+
+    /* Titre stylisé */
+    .section-title {
+        font-family: 'Space Grotesk', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 6px;
+        color: var(--kairos-gold);
+        margin-bottom: 60px;
+        position: relative;
+    }
+
+    /* Carte de membre "Cinématique" */
+    .member-card {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .member-card:hover {
+        border-color: var(--kairos-gold);
+        transform: translateY(-10px);
+        background: rgba(255, 255, 255, 0.04);
+    }
+
+    /* Traitement de l'image */
+    .member-image-box {
+        width: 100%;
+        aspect-ratio: 1/1; /* Carré parfait pour la régularité */
+        overflow: hidden;
+        filter: grayscale(100%);
+        transition: 0.6s ease;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .member-card:hover .member-image-box {
+        filter: grayscale(0%);
+    }
+
+    .member-image-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.8s ease;
+    }
+
+    .member-card:hover img {
+        transform: scale(1.1);
+    }
+
+    /* Informations */
+    .member-info {
+        padding: 25px;
+        text-align: left;
+    }
+
+    .member-name {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 5px;
+        color: #ffffff;
+    }
+
+    .member-role {
+        font-size: 0.75rem;
+        color: var(--kairos-gold);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .member-desc {
+        color: #888;
+        font-size: 0.85rem;
+        line-height: 1.6;
+        margin-bottom: 0;
+    }
+
+    /* Effet de lueur au survol */
+    .member-card::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--kairos-gold);
+        transform: scaleX(0);
+        transition: 0.4s ease;
+    }
+
+    .member-card:hover::after {
+        transform: scaleX(1);
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <h1 class="section-title">Notre équipe</h1>
-    <div class="row g-4">
+<div class="container team-section">
+    <div class="text-center mb-5">
+        <h1 class="section-title">Les Bâtisseurs</h1>
+        <p class="text-muted small text-uppercase" style="letter-spacing: 3px;">L'intelligence collective derrière l'écosystème Kairos</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
         {% for membre in equipe %}
-        <div class="col-md-3 fade-in">
-            <div class="team-member">
-                <img src="{{ url_for('static', filename='images/' + membre.photo) if membre.photo else url_for('static', filename='images/default-avatar.jpg') }}" alt="{{ membre.nom }}">
-                <h5>{{ membre.nom }}</h5>
-                <p>{{ membre.role }}</p>
-                <p class="small">{{ membre.description }}</p>
+        <div class="col-lg-3 col-md-6 fade-in">
+            <div class="member-card">
+                <div class="member-image-box">
+                    <img src="{{ url_for('static', filename='images/' + membre.photo) if membre.photo else url_for('static', filename='images/default-avatar.jpg') }}" 
+                         alt="{{ membre.nom }}">
+                </div>
+                
+                <div class="member-info">
+                    <span class="member-role">{{ membre.role }}</span>
+                    <h5 class="member-name">{{ membre.nom }}</h5>
+                    <p class="member-desc">{{ membre.description }}</p>
+                    
+                    {# Debugging discret pour le fondateur #}
+                    {% if config.debug %}
+                    <div class="mt-3 pt-3 border-top border-secondary">
+                        <code style="font-size: 10px; color: #555;">SRC: {{ membre.photo }}</code>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
         {% else %}
-        <p class="text-center">Aucun membre pour le moment.</p>
+        <div class="col-12 text-center py-5">
+            <p class="text-muted italic">L'écosystème est en cours de déploiement...</p>
+        </div>
         {% endfor %}
     </div>
 </div>

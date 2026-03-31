@@ -1,25 +1,152 @@
 {% extends 'base.html' %}
 
-{% block title %}Blog - {{ config.nom_entreprise }}{% endblock %}
+{% block title %}Insights | {{ config.nom_entreprise }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .blog-container {
+        padding-top: 120px;
+        padding-bottom: 80px;
+    }
+
+    /* Carte Article Style "Lab" */
+    .article-card {
+        background: rgba(255, 255, 255, 0.01);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .article-card:hover {
+        border-color: var(--kairos-gold);
+        background: rgba(255, 255, 255, 0.03);
+        transform: translateY(-8px);
+    }
+
+    /* Image avec overlay de couleur */
+    .article-img-wrapper {
+        position: relative;
+        height: 220px;
+        overflow: hidden;
+        background: #000;
+    }
+
+    .article-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.5;
+        transition: 0.6s ease;
+        filter: contrast(1.1) brightness(0.8);
+    }
+
+    .article-card:hover .article-img-wrapper img {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+
+    /* Contenu de la carte */
+    .article-body {
+        padding: 30px;
+        flex-grow: 1;
+    }
+
+    .article-meta {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--kairos-gold);
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .article-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        line-height: 1.4;
+        margin-bottom: 15px;
+        color: #fff;
+    }
+
+    .article-excerpt {
+        color: #888;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        margin-bottom: 25px;
+    }
+
+    /* Lien de lecture unique */
+    .read-more-link {
+        color: #fff;
+        text-decoration: none;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        margin-top: auto;
+        transition: 0.3s;
+    }
+
+    .read-more-link::after {
+        content: "";
+        width: 20px;
+        height: 1px;
+        background: var(--kairos-gold);
+        margin-left: 10px;
+        transition: 0.3s;
+    }
+
+    .article-card:hover .read-more-link {
+        color: var(--kairos-gold);
+    }
+
+    .article-card:hover .read-more-link::after {
+        width: 40px;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <h1 class="section-title">Blog</h1>
-    <div class="row g-4">
+<div class="container blog-container">
+    <div class="text-center mb-5 pb-4">
+        <span class="text-gold small text-uppercase" style="letter-spacing: 5px; color: var(--kairos-gold);">Intelligence & Vision</span>
+        <h1 class="section-title mt-2">KAIROS Insights</h1>
+        <p class="text-muted mx-auto" style="max-width: 600px;">Analyse des tendances technologiques et mises à jour de l'écosystème.</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
         {% for article in articles %}
-        <div class="col-md-4 fade-in">
-            <div class="card h-100">
-                <img src="{{ url_for('static', filename='images/' + article.image) if article.image else url_for('static', filename='images/default-article.jpg') }}" class="card-img-top" alt="{{ article.titre }}" style="height: 200px; object-fit: cover;">
-                <div class="card-body">
-                    <h5 class="card-title">{{ article.titre }}</h5>
-                    <p class="text-muted">{{ article.date.strftime('%d/%m/%Y') }} par {{ article.auteur }}</p>
-                    <p class="card-text">{{ article.resume or article.contenu[:150] }}...</p>
-                    <a href="{{ url_for('main.blog_detail', id=article.id) }}" class="btn btn-primary">Lire la suite</a>
+        <div class="col-lg-4 col-md-6 fade-in">
+            <article class="article-card">
+                <div class="article-img-wrapper">
+                    <img src="{{ url_for('static', filename='images/' + article.image) if article.image else url_for('static', filename='images/default-article.jpg') }}" 
+                         alt="{{ article.titre }}">
                 </div>
-            </div>
+                
+                <div class="article-body">
+                    <span class="article-meta">
+                        {{ article.date.strftime('%d . %m . %Y') }} — Par {{ article.auteur }}
+                    </span>
+                    <h3 class="article-title">{{ article.titre }}</h3>
+                    <p class="article-excerpt">
+                        {{ article.resume or article.contenu[:120] }}...
+                    </p>
+                    <a href="{{ url_for('main.blog_detail', id=article.id) }}" class="read-more-link">
+                        Lire l'analyse
+                    </a>
+                </div>
+            </article>
         </div>
         {% else %}
-        <p class="text-center">Aucun article pour le moment.</p>
+        <div class="col-12 text-center py-5">
+            <p class="text-muted" style="letter-spacing: 2px;">Le flux de données est actuellement en veille...</p>
+        </div>
         {% endfor %}
     </div>
 </div>
